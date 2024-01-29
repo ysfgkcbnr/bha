@@ -4,3 +4,4 @@ pandas
 matplotlib
 ta==0.7.0
 mplfinance
+uvicorn
