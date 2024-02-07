@@ -11,6 +11,44 @@ TOKEN = "6346404742:AAE__Qef0kikLEehZ6bq7VprTtZDyuRATZw"
 user_data = {}
 start_date = "2020-01-01"
 
+
+def get_stocks_below_ema200():
+    # TradingView'den verileri almak için API isteği yapalım
+    url = "https://scanner.tradingview.com/turkey/scan"
+
+    payload = {
+        "filter": [
+            {
+                "left": "EMA200",
+                "operation": "less",
+                "right": 0
+            }
+        ],
+        "options": {
+            "active_symbols_only": True,
+            "lang": "tr"
+        },
+        "symbols": {
+            "query": {
+                "types": []
+            },
+            "tickers": []
+        }
+    }
+
+    response = requests.post(url, json=payload)
+    if response.status_code == 200:
+        data = response.json()
+        if 'data' in data:
+            for stock in data['data']:
+                symbol = stock['d'][0]
+                ema200 = stock['d'][1]
+                print(f"{symbol}: EMA200: {ema200}")
+
+
+get_stocks_below_ema200()
+
+
 def send_message(chat_id, text):
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
     params = {'chat_id': chat_id, 'text': text}
