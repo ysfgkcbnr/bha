@@ -178,7 +178,11 @@ def main():
 
             if user_message.startswith("/start") and 'started' not in user_data.get(chat_id, {}):
                 user_data[chat_id] = {'started': True, 'photo_sent': False}
-                send_message(chat_id, "Merhaba,/analyze hisse_adı.ıs şeklinde komutunuzu giriniz:")
+                send_message(chat_id, "Merhaba, /analyze hisse_adı.ıs veya /ema komutlarını kullanarak işlem yapabilirsiniz.")
+
+            elif user_message.startswith("/ema") and 'started' in user_data.get(chat_id, {}):
+                # Eğer /ema komutu geldiyse, stocks_below_ema200 fonksiyonunu çağır
+                get_stocks_below_ema200()
 
             elif user_message.startswith("/analyze") and 'started' in user_data.get(chat_id, {}) and not user_data.get(
                     chat_id, {}).get('photo_sent', False):
@@ -217,6 +221,11 @@ def main():
             update_id = updates["result"][-1]["update_id"] + 1
         else:
             time.sleep(1)
+
+
+if __name__ == '__main__':
+    main()
+
 
 
 if __name__ == '__main__':
